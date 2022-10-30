@@ -1,15 +1,3 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { Auth } from '../auth.schema';
 
-export class AuthRequestDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}
+export class AuthRequestDto extends Auth {}

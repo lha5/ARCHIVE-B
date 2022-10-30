@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaOptions } from 'mongoose';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 const options: SchemaOptions = {
   timestamps: true,
@@ -8,6 +9,11 @@ const options: SchemaOptions = {
 
 @Schema(options)
 export class Auth extends Document {
+  @ApiProperty({
+    example: 'example@archive-b.com',
+    description: '이메일',
+    required: true,
+  })
   @Prop({
     required: true,
     unique: true,
@@ -16,20 +22,36 @@ export class Auth extends Document {
   @IsNotEmpty()
   email: string;
 
-  @Prop({ required: true })
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
+  @ApiProperty({
+    example: 'password12345',
+    description: '비밀번호',
+    required: true,
+  })
   @Prop({ required: true })
   @IsString()
   @IsNotEmpty()
   password: string;
 
-  @Prop()
+  @ApiProperty({
+    example: 'archiveB',
+    description: '이름(닉네임)',
+    required: true,
+  })
+  @Prop({ required: true })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty({
+    example: false,
+    description: '관리자 권한',
+    default: false,
+  })
+  @IsBoolean()
+  @Prop({ default: false })
   isAdmin: boolean;
 
-  readonly readOnlyData: { id: string; email: string; name: string };
+  readonly readOnlyData: { id: string; email: string; name: string; isAdmin: boolean };
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);
@@ -39,5 +61,6 @@ AuthSchema.virtual('readOnlyData').get(function (this: Auth) {
     id: this.id,
     email: this.email,
     name: this.name,
+    isAdmin: this.isAdmin,
   };
 });
