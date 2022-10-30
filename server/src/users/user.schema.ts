@@ -8,7 +8,7 @@ const options: SchemaOptions = {
 };
 
 @Schema(options)
-export class Auth extends Document {
+export class User extends Document {
   @ApiProperty({
     example: 'example@archive-b.com',
     description: '이메일',
@@ -54,9 +54,9 @@ export class Auth extends Document {
   readonly readOnlyData: { id: string; email: string; name: string; isAdmin: boolean };
 }
 
-export const AuthSchema = SchemaFactory.createForClass(Auth);
+export const UserSchema = SchemaFactory.createForClass(User);
 
-AuthSchema.virtual('readOnlyData').get(function (this: Auth) {
+UserSchema.virtual('readOnlyData').get(function (this: User) {
   return {
     id: this.id,
     email: this.email,

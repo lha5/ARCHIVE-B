@@ -2,15 +2,15 @@ import { Body, Controller, Post, UseFilters, UseInterceptors } from '@nestjs/com
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
-import { AuthService } from './auth.service';
-import { AuthRequestDto } from './dto/auth.request.dto';
-import { ReadOnlyAuthDto } from './dto/auth.dto';
+import { UserService } from './user.service';
+import { UserRequesetDto } from './dto/user.request.dto';
+import { ReadOnlyUserDto } from './dto/user.dto';
 
-@Controller('auth')
+@Controller('user')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @ApiResponse({
     status: 500,
@@ -19,11 +19,11 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Success',
-    type: ReadOnlyAuthDto,
+    type: ReadOnlyUserDto,
   })
   @ApiOperation({ summary: '회원 가입' })
   @Post()
-  async signUp(@Body() body: AuthRequestDto) {
-    return await this.authService.signUp(body);
+  async signUp(@Body() body: UserRequesetDto) {
+    return await this.userService.signUp(body);
   }
 }
