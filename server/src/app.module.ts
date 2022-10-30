@@ -7,7 +7,8 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { PostsModule } from './posts/posts.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
-import { UserModule } from './users/user.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { UserModule } from './users/user.module';
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
-    UserModule,
+    UsersModule,
+    AuthModule,
     PostsModule,
   ],
   controllers: [AppController],

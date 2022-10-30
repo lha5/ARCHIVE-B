@@ -1,10 +1,10 @@
-import { UsersRepository } from './user.repository';
+import { UsersRepository } from './users.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRequesetDto } from './dto/user.request.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async signUp(body: UserRequesetDto) {
