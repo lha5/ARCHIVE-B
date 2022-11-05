@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
+import { Payload } from './jwt.payload';
+import { UsersRepository } from './../../users/users.repository';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private readonly usersRepository: UsersRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.SECRET_KEY,
@@ -12,7 +14,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload) {
-    //
+  async validate(payload: Payload) {
+    const user = await this.usersRepository.findUserByIdWithoutPassword(payload.sub);
+
+    if (user) {
+      return user;
+    } else {
+      throw new UnauthorizedException('해당 사용자가 없습니다.');
+    }
   }
 }

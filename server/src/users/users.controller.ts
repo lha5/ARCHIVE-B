@@ -1,5 +1,7 @@
-import { Body, Controller, Post, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CurrentUser } from './../common/decorators/user.decorator';
+import { JwtAuthGuard } from './../auth/jwt/jwt.guard';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { UsersService } from './users.service';
@@ -13,6 +15,13 @@ import { ReadOnlyUserDto } from './dto/user.dto';
 @UseFilters(HttpExceptionFilter)
 export class UserController {
   constructor(private readonly userService: UsersService, private readonly authService: AuthService) {}
+
+  @ApiOperation({ summary: '현재 사용자 정보 가져오기' })
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getCurrentUser(@CurrentUser() user) {
+    return user.readOnlyData;
+  }
 
   @ApiResponse({
     status: 500,
