@@ -16,7 +16,7 @@ import { ReadOnlyUserDto } from './dto/user.dto';
 export class UserController {
   constructor(private readonly userService: UsersService, private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: '현재 사용자 정보 가져오기' })
+  @ApiOperation({ summary: '로그인 정보 가져오기' })
   @UseGuards(JwtAuthGuard)
   @Get()
   async getCurrentUser(@CurrentUser() user) {
@@ -32,7 +32,7 @@ export class UserController {
     description: 'Success',
     type: ReadOnlyUserDto,
   })
-  @ApiOperation({ summary: '회원 가입' })
+  @ApiOperation({ summary: '사용자 계정 생성' })
   @Post('signup')
   async signUp(@Body() body: UserRequesetDto) {
     return await this.userService.signUp(body);
