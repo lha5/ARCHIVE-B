@@ -38,11 +38,11 @@ model Post {
     type            String
     content         String
     image           String?
-    isSecret        Boolean  @default(false)
+    isSecret        Boolean? @default(false)
     secretPassword  String?
-    isFolded        Boolean  @default(false)
-    isForMembers    Boolean  @default(false)
-    isForAdmin      Boolean  @default(false)
+    isFolded        Boolean? @default(false)
+    isForMembers    Boolean? @default(false)
+    isForAdmin      Boolean? @default(false)
 
     author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId        String
