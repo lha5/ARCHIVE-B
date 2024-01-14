@@ -54,9 +54,8 @@ model Post {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
+    id                String  @id @default(cuid()) @unique
+    userId            String  @unique
     refresh_token     String? @db.Text
     access_token      String? @db.Text
     expires_at        Int?
@@ -80,10 +79,8 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(cuid()) @unique
     name          String?
-    email         String?   @unique
-    emailVerified DateTime?
     image         String?
     role          Role      @default(USER)
     accounts      Account[]
