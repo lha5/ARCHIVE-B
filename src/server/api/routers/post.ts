@@ -4,7 +4,7 @@ import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 
 export const postRouter = createTRPCRouter({
   createPost: protectedProcedure
-    .input(z.object({ name: z.string().min(1), type: z.string(), content: z.string() }))
+    .input(z.object({ name: z.string(), type: z.string(), content: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.db.post.create({
         data: {
@@ -19,7 +19,13 @@ export const postRouter = createTRPCRouter({
   getAllPosts: protectedProcedure.query(({ ctx }) => {
     return ctx.db.post.findMany({
       orderBy: { createdAt: 'desc' },
-      // where: { author: { id: ctx.session.user.id } },
+    });
+  }),
+
+  getAllPostsById: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.post.findMany({
+      orderBy: { createdAt: 'desc' },
+      where: { author: { id: ctx.session.user.id } },
     });
   }),
 });
