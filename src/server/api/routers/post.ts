@@ -22,7 +22,7 @@ export const postRouter = createTRPCRouter({
     });
   }),
 
-  getAllPostsById: protectedProcedure.query(({ ctx }) => {
+  getAllPostsByUserId: protectedProcedure.query(({ ctx }) => {
     return ctx.db.post.findMany({
       orderBy: { createdAt: 'desc' },
       where: { author: { id: ctx.session.user.id } },
